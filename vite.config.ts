@@ -22,8 +22,7 @@ export default defineConfig({
         resolve(__dirname, 'src/preload.ts'),
         resolve(__dirname, 'src/vue.ts')
       ],
-      name: 'lib',
-      formats: ['cjs', 'es']
+      name: 'lib'
     },
     rollupOptions: {
       external: ['vue'],

@@ -2,10 +2,12 @@
   "name": "vue-electron-updater",
   "version": "0.0.0",
   "type": "module",
+  "typesVersions": {
+    "*": {
+      "*": ["./dist/*.d.ts"]
+    }
+  },
   "exports": {
-    ".": {
-      "import": "./dist/*.js"
-    },
     "./vue": {
       "import": "./dist/vue.js",
       "require": "./dist/vue.cjs",
