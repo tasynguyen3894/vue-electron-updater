@@ -1,7 +1,12 @@
 {
   "name": "vue-electron-updater",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "type": "module",
+  "author": {
+    "name": "Sang Nguyen",
+    "email": "thaisang.nguyen3894@gmail.com",
+    "url": "https://sangnguyen.dev"
+  },
   "typesVersions": {
     "*": {
       "*": ["./dist/*.d.ts"]
@@ -46,5 +51,10 @@
     "h3": "^1.9.0",
     "vite-plugin-commonjs-externals": "^0.1.4",
     "vue": "^3.4.3"
-  }
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tasynguyen3894/vue-electron-updater/issues"
+  },
+  "homepage": "https://github.com/tasynguyen3894/vue-electron-updater#readme"
 }
