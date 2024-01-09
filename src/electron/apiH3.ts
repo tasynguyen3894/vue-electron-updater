@@ -366,8 +366,11 @@ export class UpdaterDevServer {
   private apiInstance: App;
   protected apiServer: Server | undefined;
   protected dispatcher: Dispatcher;
+  protected port: number = 5050;
 
-  constructor(dispatcher: Dispatcher) {
+  constructor(dispatcher: Dispatcher, options: {
+    port?: number
+  } = {}) {
     this.dispatcher = dispatcher;
     const app = createApp();
     this.apiInstance = app;
@@ -377,6 +380,9 @@ export class UpdaterDevServer {
     dispatchApi.post('/dispatch/downloaded', this.handleOnDownloaded());
     dispatchApi.post('/dispatch/error', this.handleOnError());
     app.use(dispatchApi);
+    if(options.port) {
+      this.port = options.port
+    }
   }
 
   public startServer() {

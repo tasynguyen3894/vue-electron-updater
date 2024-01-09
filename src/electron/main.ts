@@ -25,12 +25,18 @@ export class ApplicationAutoUpdater {
   }
   
   setup({
-    isDev = false
+    isDev = false,
+    port = 5050
+  }: {
+    isDev?: boolean,
+    port?: number
   }) {
     const updater = createUpdater(this.autoUpdater);
     if(isDev) {
       updater.fake();
-      const api = new UpdaterDevServer(this.dispatcher);
+      const api = new UpdaterDevServer(this.dispatcher, {
+        port
+      });
       api.startServer();
     } else {
       this.autoUpdater.on('update-available', () => {
