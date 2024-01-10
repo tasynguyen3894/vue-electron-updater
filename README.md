@@ -23,11 +23,13 @@ import { ApplicationAutoUpdater } from 'vue-electron-updater/main';
 const applicationUpdater = new ApplicationAutoUpdater(
   autoUpdater,
   new BrowserWindow({
-    // setuo
   }), 
   ipcMain
 );
-applicationUpdater.setup();
+applicationUpdater.setup({
+  isDev: true,
+  port: 5050
+});
 ```
 
 In the `preload` script, we can install the setup via the function `setupPreload`.
