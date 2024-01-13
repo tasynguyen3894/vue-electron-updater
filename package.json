@@ -9,7 +9,9 @@
   },
   "typesVersions": {
     "*": {
-      "*": ["./dist/*.d.ts"]
+      "*": [
+        "./dist/*.d.ts"
+      ]
     }
   },
   "exports": {
@@ -32,7 +34,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest"
   },
   "devDependencies": {
     "@types/node": "^20.10.6",
@@ -50,6 +53,7 @@
     "electron-updater": "^6.1.7",
     "h3": "^1.9.0",
     "vite-plugin-commonjs-externals": "^0.1.4",
+    "vitest": "^1.2.0",
     "vue": "^3.4.3"
   },
   "license": "ISC",
