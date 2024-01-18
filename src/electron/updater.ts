@@ -5,35 +5,46 @@ export interface Updater {
   checkForUpdates(): Promise<UpdateCheckResult | null>
   quitAndInstall(): void,
   fake(): void,
-  unfake(): void
+  unfake(): void,
+  mockDownloadUpdate(data: string[]): void
+}
+
+export class UpdaterService implements Updater {
+  protected autoUpdater: AppUpdater;
+  protected isFake = false;
+  protected mockDownloadData: string[] = [];
+
+  constructor(autoUpdater: AppUpdater) {
+    this.autoUpdater = autoUpdater;
+  }
+
+  checkForUpdates() {
+    return this.isFake ? Promise.resolve(null) : this.autoUpdater.checkForUpdates();
+  }
+  
+  downloadUpdates() {
+    return this.isFake ? Promise.resolve(this.mockDownloadData) : this.autoUpdater.downloadUpdate();
+  }
+
+  quitAndInstall() {
+    if(!this.isFake) {
+      this.autoUpdater.quitAndInstall();
+    }
+  }
+
+  fake() {
+    this.isFake = true;
+  }
+
+  unfake() {
+    this.isFake = false;
+  }
+
+  mockDownloadUpdate(data: string[]) {
+    this.mockDownloadData = data;
+  }
 }
 
 export function createUpdater(autoUpdater: AppUpdater): Updater {
-  let isFake: boolean = false;
-
-  function checkForUpdates() {
-    return isFake ? Promise.resolve(null) : autoUpdater.checkForUpdates();
-  }
-  
-  function downloadUpdates() {
-    return isFake ? Promise.resolve([]) : autoUpdater.downloadUpdate();
-  }
-
-  function quitAndInstall() {
-    if(!isFake) {
-      autoUpdater.quitAndInstall();
-    }
-  }
-
-  return {
-    downloadUpdates,
-    checkForUpdates,
-    quitAndInstall,
-    fake() {
-      isFake = true;
-    },
-    unfake() {
-      isFake = false;
-    }
-  }
+  return new UpdaterService(autoUpdater)
 }

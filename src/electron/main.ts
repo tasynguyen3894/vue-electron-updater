@@ -38,6 +38,9 @@ export class ApplicationAutoUpdater {
         port
       });
       api.startServer();
+      api.onUpdateDownload((data) => {
+        updater.mockDownloadUpdate(data);
+      })
     } else {
       this.autoUpdater.on('update-available', () => {
         this.dispatcher.onUpdateAvailable(true);

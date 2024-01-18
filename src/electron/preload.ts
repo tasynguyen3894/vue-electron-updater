@@ -9,7 +9,7 @@ export function setupPreload(context: Electron.ContextBridge, ipcRenderer: Elect
       }
     },
     [EVENT_INVOKE_KEY](args: any) {
-      ipcRenderer.invoke(EVENT_INVOKE_KEY, args)
+      return ipcRenderer.invoke(EVENT_INVOKE_KEY, args);
     }
   });
 }

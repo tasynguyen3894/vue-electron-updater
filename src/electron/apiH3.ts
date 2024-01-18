@@ -355,6 +355,7 @@ About
 </html>
 `
 
+type DownloadCallback = (data: string[]) => void;
 
 export interface Updater {
   downloadUpdates(): Promise<string[]>
@@ -367,6 +368,7 @@ export class UpdaterDevServer {
   protected apiServer: Server | undefined;
   protected dispatcher: Dispatcher;
   protected port: number = 5050;
+  protected downloadMockCallback: null | DownloadCallback = null;
 
   constructor(dispatcher: Dispatcher, options: {
     port?: number
@@ -425,6 +427,25 @@ export class UpdaterDevServer {
       }
     })
   }
+  
+  protected handleMockDownload() {
+    return eventHandler(async (event) => {
+      try {
+        const body = await readRawBody(event)
+        if(body) {
+          const { messages = [] } = JSON.parse(body);
+          if(this.downloadMockCallback) {
+            this.downloadMockCallback(messages);
+          }
+        }
+      } catch (error) {
+        
+      }
+      return {
+        status: true
+      };
+    })
+  }
 
   protected handleOnAvailable() {
     return eventHandler(async (event) => {
@@ -441,5 +462,9 @@ export class UpdaterDevServer {
         status: true
       };
     })
+  }
+
+  public onUpdateDownload(callback: DownloadCallback) {
+    this.downloadMockCallback = callback;
   }
 }

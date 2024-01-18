@@ -49,9 +49,6 @@ import { createApplicationUpdater } from 'vue-electron-updater/vue';
 app.use(createApplicationUpdater());
 ```
 
-app.use()
-```
-
 ## License
 
 MIT &copy; [Sang Nguyen](https://github.com/tasynguyen3894)
