@@ -1,43 +1,54 @@
-import { AppUpdater, UpdateCheckResult } from 'electron-updater';
+import { UpdateCheckResult } from 'electron-updater';
 
 export interface Updater {
   downloadUpdates(): Promise<string[]>
   checkForUpdates(): Promise<UpdateCheckResult | null>
   quitAndInstall(): void,
-  fake(): void,
-  unfake(): void,
+  useMock(): void,
+  stopMock(): void,
+  isMock(): boolean,
   mockDownloadUpdate(data: string[]): void
 }
 
+export interface ApplicationUpdater {
+  downloadUpdate(): Promise<string[]>
+  checkForUpdates(): Promise<UpdateCheckResult | null>
+  quitAndInstall(): void
+}
+
 export class UpdaterService implements Updater {
-  protected autoUpdater: AppUpdater;
-  protected isFake = false;
+  protected autoUpdater: ApplicationUpdater;
+  protected mock = false;
   protected mockDownloadData: string[] = [];
 
-  constructor(autoUpdater: AppUpdater) {
+  constructor(autoUpdater: ApplicationUpdater) {
     this.autoUpdater = autoUpdater;
   }
 
   checkForUpdates() {
-    return this.isFake ? Promise.resolve(null) : this.autoUpdater.checkForUpdates();
+    return this.mock ? Promise.resolve(null) : this.autoUpdater.checkForUpdates();
   }
   
   downloadUpdates() {
-    return this.isFake ? Promise.resolve(this.mockDownloadData) : this.autoUpdater.downloadUpdate();
+    return this.mock ? Promise.resolve(this.mockDownloadData) : this.autoUpdater.downloadUpdate();
   }
 
   quitAndInstall() {
-    if(!this.isFake) {
+    if(!this.mock) {
       this.autoUpdater.quitAndInstall();
     }
   }
 
-  fake() {
-    this.isFake = true;
+  useMock() {
+    this.mock = true;
   }
 
-  unfake() {
-    this.isFake = false;
+  stopMock() {
+    this.mock = false;
+  }
+
+  isMock() {
+    return this.mock;
   }
 
   mockDownloadUpdate(data: string[]) {
@@ -45,6 +56,6 @@ export class UpdaterService implements Updater {
   }
 }
 
-export function createUpdater(autoUpdater: AppUpdater): Updater {
+export function createUpdater(autoUpdater: ApplicationUpdater): Updater {
   return new UpdaterService(autoUpdater)
 }

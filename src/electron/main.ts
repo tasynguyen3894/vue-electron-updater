@@ -33,7 +33,7 @@ export class ApplicationAutoUpdater {
   }) {
     const updater = createUpdater(this.autoUpdater);
     if(isDev) {
-      updater.fake();
+      updater.useMock();
       const api = new UpdaterDevServer(this.dispatcher, {
         port
       });
