@@ -1,5 +1,3 @@
-import { BrowserWindow } from 'electron';
-
 import { EVENT_MESSAGE_KEY, EventType } from './constant';
 
 export type Dispatcher = {
@@ -7,6 +5,14 @@ export type Dispatcher = {
   onUpdateAvailable(available: boolean): void;
   onDownloaded(): void;
   onError(message: string): void
+}
+
+export interface WebContents {
+  send(channel: string, ...args: any[]): void
+}
+
+export interface BrowserWindow {
+  webContents: WebContents
 }
 
 export function createDispatcher(appWindow: BrowserWindow): Dispatcher  {
