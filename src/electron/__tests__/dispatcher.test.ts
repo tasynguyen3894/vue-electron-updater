@@ -17,6 +17,33 @@ describe('Test Dispatcher', () => {
     expect(webContentsSendMock).toBeCalledWith(EVENT_MESSAGE_KEY, {
       type: EventType.updateDownloaded,
       value: {}
-    })
+    });
+  });
+
+  it('Should handle onUpdateAvailable true', () => {
+    dispatcher.onUpdateAvailable(true);
+    expect(webContentsSendMock).toBeCalledWith(EVENT_MESSAGE_KEY, {
+      type: EventType.updateAvailable,
+      value: {}
+    });
+  });
+
+
+  it('Should handle onUpdateAvailable false', () => {
+    dispatcher.onUpdateAvailable(false);
+    expect(webContentsSendMock).toBeCalledWith(EVENT_MESSAGE_KEY, {
+      type: EventType.updateNotAvailable,
+      value: {}
+    });
+  });
+
+  it('Should  handle onError', () => {
+    dispatcher.onError('error');
+    expect(webContentsSendMock).toBeCalledWith(EVENT_MESSAGE_KEY, {
+      type: EventType.error,
+      value: {
+        message: 'error'
+      }
+    });
   });
 });
